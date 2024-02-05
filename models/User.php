@@ -10,6 +10,7 @@ class User {
     public $password;
     public $image;
     public $token;
+    public $bio;
 
     public function getFullName($user) {
 

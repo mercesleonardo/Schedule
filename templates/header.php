@@ -1,6 +1,6 @@
 <?php
-    include_once("config/url.php");
-    include_once("config/process.php");
+    require_once("config/globals.php");
+    require_once("config/process.php");
 
     //Clean up message
     if(isset($_SESSION['msg'])) {
