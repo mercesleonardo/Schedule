@@ -1,10 +1,10 @@
 <?php
 
+require_once("config/globals.php");
+require_once("config/connection.php");
 require_once("models/User.php");
 require_once("models/Message.php");
 require_once("dao/UserDAO.php");
-require_once("config/globals.php");
-require_once("config/connection.php");
 
 $message = new Message($BASE_URL);
 
@@ -14,7 +14,7 @@ $userDao = new UserDAO($conn, $BASE_URL);
 $type = filter_input(INPUT_POST, "type");
 
 //Checking the form type
-if($type === "registration") {
+if($type === "register") {
 
     $email = filter_input(INPUT_POST, "email");
     $name = filter_input(INPUT_POST, "name");
@@ -86,7 +86,7 @@ if($type === "registration") {
 
                 $auth = true;
 
-                $authDao->create($user, $auth);
+                $userDao->create($user, $auth);
                 
             } else {
           
@@ -105,7 +105,7 @@ if($type === "registration") {
     } else {
 
         // Sends an error message, incomplete data
-        $message->setMessage("Por favor, preencha todos os campos.", "error", "back");
+        $message->setMessage("Você precisa preencher pelo menos: e-mail, nome e sobrenome", "error", "back");
   
     }
 

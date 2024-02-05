@@ -1,13 +1,12 @@
 <?php
 
-$host = "localhost";
-$dbname = "schedule";
-$user = "root";
-$pass = "";
+$db_name = "schedule";
+$db_host = "localhost";
+$db_user = "root";
+$db_pass = "";
 
 try {
-
-    $conn = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
+    $conn = new PDO("mysql:dbname=". $db_name .";host=". $db_host, $db_user, $db_pass);
 
     //Activate error mode
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);    

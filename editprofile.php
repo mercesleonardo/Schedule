@@ -5,7 +5,7 @@
         <?php require_once("templates/backbtn.html"); ?>
         <h1 id="main-title">Editar usuário</h1>
         <form id="create-form" action="<?= $BASE_URL ?>auth_process.php" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="type" value="register">
+            <input type="hidden" name="type" value="update">
             <div class="form-group">
                 <label for="email">E-mail:</label>
                 <input type="email" class="form-control" name="email" id="email" placeholder="Digite seu email">
