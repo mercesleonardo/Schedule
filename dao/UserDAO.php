@@ -37,14 +37,11 @@ class UserDAO implements UserDAOInterface {
 
     public function create(User $user, $authUser = false) {
 
-        $stmt = $this->conn->prepare("INSERT INTO users (email, name, lastname, phone, image, bio, password, token) VALUES (:email, :name, :lastname, :phone, :image, :bio, :password, :token)");
+        $stmt = $this->conn->prepare("INSERT INTO users (email, name, lastname, password, token) VALUES (:email, :name, :lastname, :password, :token)");
 
         $stmt->bindParam(":email", $user->email);
         $stmt->bindParam(":name", $user->name);
         $stmt->bindParam(":lastname", $user->lastname);
-        $stmt->bindParam(":phone", $user->phone);
-        $stmt->bindParam(":image", $user->image);
-        $stmt->bindParam(":bio", $user->bio);
         $stmt->bindParam(":password", $user->password);
         $stmt->bindParam(":token", $user->token);
 
@@ -61,11 +58,55 @@ class UserDAO implements UserDAOInterface {
 
     public function update(User $user, $redirect = true) {
 
+        $stmt = $this->conn->prepare("UPDATE users SET email = :email, name = :name, lastname = :lastname, phone = :phone, bio = :bio, image = :image, token = :token, password = :password WHERE id = :id");
+
+        $stmt->bindParam(":email", $user->email);
+        $stmt->bindParam(":name", $user->name);
+        $stmt->bindParam(":lastname", $user->email);
+        $stmt->bindParam(":phone", $user->phone);
+        $stmt->bindParam(":bio", $user->bio);
+        $stmt->bindParam(":image", $user->image);
+        $stmt->bindParam(":token", $user->token);
+        $stmt->bindParam(":password", $user->password);
+        $stmt->bindParam(":id", $user->id);
+
+        $stmt->execute();
+
+        // Redirect to the user's profile
+        if($redirect) {
+
+            $this->message->setMessage("Dados atualizados com sucesso!", "success", "editprofile.php");
+
+        }
 
     }
 
     public function verifyToken($protected = false) {
 
+        if(!empty($_SESSION["token"])) {
+
+            // Get the session token
+            $token = $_SESSION["token"];
+
+            $user = $this->findByToken($token);
+
+            if($user) {
+
+                return $user;
+
+            // Redirect unauthenticated user
+            } else if($protected) {
+
+                $this->message->setMessage("Faça a autenticação para acessar esta página", "error", "auth.php");
+
+            }
+
+        // Redirect unauthenticated user    
+        }  else if($protected) {
+
+            $this->message->setMessage("Faça a autenticação para acessar esta página", "error", "auth.php");
+
+        }
 
     }
 
@@ -85,6 +126,36 @@ class UserDAO implements UserDAOInterface {
 
     public function authenticateUser($email, $password) {
 
+        $user = $this->findByEmail($email);
+
+        if($user) {
+
+            // Check if password is correct
+            if(password_verify($password, $user->password)) {
+
+                // Generate a token and insert it into the session.
+                $token = $user->generateToken();
+
+                $this->setTokenToSession($token, false);
+
+                // Authenticate the user's token
+                $user->token = $token;
+
+                $this->update($user, false);
+
+                return true;
+
+            } else {
+
+                return false;
+
+            }
+
+        } else {
+
+            return false;
+
+        }
 
     }
 
@@ -95,6 +166,7 @@ class UserDAO implements UserDAOInterface {
             $stmt = $this->conn->prepare("SELECT * FROM users WHERE email = :email");
 
             $stmt->bindParam(":email", $email);
+
             $stmt->execute();
 
             if($stmt->rowCount() > 0) {
@@ -125,6 +197,32 @@ class UserDAO implements UserDAOInterface {
 
     public function findByToken($token) {
 
+        if($token != "") {
+
+            $stmt = $this->conn->prepare("SELECT * FROM users WHERE token = :token");
+
+            $stmt->bindParam(":token", $token);
+
+            $stmt->execute();
+
+            if($stmt->rowCount() > 0) {
+
+                $data = $stmt->fetch();
+                $user = $this->buildUser($data);
+
+                return $user;
+
+            } else {
+
+                return false;
+
+            }
+
+        } else {
+
+            return false;
+
+        }
 
     }
 

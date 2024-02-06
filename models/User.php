@@ -3,19 +3,19 @@
 class User {
 
     public $id;
+    public $email;
     public $name;
     public $lastname;
-    public $email;
     public $phone;
-    public $password;
-    public $image;
-    public $token;
     public $bio;
+    public $image;
+    public $password;
+    public $token;
 
     public function getFullName($user) {
 
-        return $user->name . " " . $user->lastName;
-
+        return $user->name . " " . $user->lastname;
+        
     }
 
     public function generateToken() {
