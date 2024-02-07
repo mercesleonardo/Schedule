@@ -9,6 +9,7 @@ O Schedule é uma ferramenta de agendamento de contatos. Ele foi projetado para 
 O projeto foi desenvolvido utilizando as seguintes tecnologias:
 
 - PHP
+- Javascript
 - Bootstrap
 - Programação Orientada a Objetos
 - Design Patterns
