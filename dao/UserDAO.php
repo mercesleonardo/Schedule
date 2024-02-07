@@ -62,7 +62,7 @@ class UserDAO implements UserDAOInterface {
 
         $stmt->bindParam(":email", $user->email);
         $stmt->bindParam(":name", $user->name);
-        $stmt->bindParam(":lastname", $user->email);
+        $stmt->bindParam(":lastname", $user->lastname);
         $stmt->bindParam(":phone", $user->phone);
         $stmt->bindParam(":bio", $user->bio);
         $stmt->bindParam(":image", $user->image);
@@ -233,6 +233,15 @@ class UserDAO implements UserDAOInterface {
 
     public function changePassword(User $user) {
 
+        $stmt = $this->conn->prepare("UPDATE users SET password = :password Where id = :id");
+
+        $stmt->bindParam(":password", $user->password);
+        $stmt->bindParam(":id", $user->id);
+
+        $stmt->execute();
+
+        // Redirect to user profile
+        $this->message->setMessage("Senha atualizada com sucesso!", "success", "editprofile.php");
 
     }
 

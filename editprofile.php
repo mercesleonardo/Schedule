@@ -37,7 +37,7 @@
                         </div>
                         <div class="form-group">
                             <label for="email">E-mail:</label>
-                            <input type="text" readonly class="form-control disabled" name="email" id="email" value="<?= $userData->email ?>" class="form-control">
+                            <input type="text" readonly class="form-control disabled" id="email" name="email" placeholder="Digite o seu nome" value="<?= $userData->email ?>">
                         </div>
                         <input type="submit" value="Alterar" class="btn card-btn">
                     </div>
@@ -68,6 +68,7 @@
                             <label for="confirmpassword">Confirmação de senha:</label>
                             <input type="password" name="confirmpassword" id="confirmpassword" class="form-control" placeholder="Confirme sua nova senha">
                         </div>
+                        <input type="submit" class="btn card-btn" value="Alterar Senha">
                     </form>
                 </div>
             </div>
