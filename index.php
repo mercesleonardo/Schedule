@@ -1,47 +1,68 @@
 <?php
-    include_once("templates/header.php");
+    require_once("templates/header.php");
+    require_once("models/User.php");
+    require_once("dao/UserDAO.php");
+    require_once("dao/ContactDAO.php");
+
+    $user = new User();
+
+    $userDao = new UserDAO($conn, $BASE_URL);
+
+    $contactDao = new ContactDAO($conn, $BASE_URL);
+
+    // Check if the user is authenticated
+    $userData = $userDao->verifyToken(true);
+
+    $userContacts = $contactDao->getContactsByUserId($userData->id); 
+
 ?>
 
-<div class="container">
-    <?php if(isset($printMsg) && $printMsg != ""): ?>
-        <p id="msg"><?= $printMsg ?></p>
-    <?php endif; ?>
-    <h1 id="main-title">Minha agenda</h1>
-    <?php if(count($contacts) > 0): ?>
-        <table class="table" id="cantacts-table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Nome</th>
-                    <th scope="col">Telefone</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach($contacts as $contact): ?>
+<div id="main-container" class="container-fluid">
+    <h2 class="section-title">Minha Agenda</h2>
+    <p class="section-description">Adicione ou atualize as informações dos seus contatos</p>
+    <?php if($userContacts): ?>
+        <div class="col-md-12" id="add-movie-container">
+            <a href="<?= $BASE_URL ?>create_contact.php" class="btn card-btn">
+                <i class="fas fa-plus"></i> Adicionar contato
+            </a>
+            </div>
+            <div class="col-md-12" id="movies-dashboard">
+            <table class="table">
+                <thead>
+                <th scope="col">#</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Contato</th>
+                <th scope="col" class="actions-column">Ações</th>
+                </thead>
+                <tbody>
+                <?php foreach($userContacts as $contact): ?>
                     <tr>
-                        <td scope="row" class="col-id"><?= $contact["id"] ?></td>
-                        <td scope="row"><?= $contact["name"] ?></td>
-                        <td scope="row"><?= $contact["phone"] ?></td>
-                        <td scope="row" class="actions">
-                            <a href="<?= $BASE_URL ?>show.php?id=<?= $contact["id"] ?>"><i class="fas fa-eye check-icon"></i></a>
-                            <a href="<?= $BASE_URL ?>edit.php?id=<?= $contact["id"] ?>"><i class="fas fa-edit edit-icon"></i></a>
-                            <form class="delete-form" action="<?= $BASE_URL ?>config/process.php" method="POST">
-                                <input type="hidden" name="type" value="delete">  
-                                <input type="hidden" name="id" value="<?= $contact["id"] ?>">  
-                                <button type="submit" class="delete-btn"><i class="fas fa-times delete-icon"></i></button>               
-                            </form>
+                        <td scope="row"><?= $contact->id ?></td>
+                        <td class="table-contact-title"><?= $contact->name ?></a></td>            
+                        <td><?= $contact->phone ?></td>            
+                        <td class="actions-column">
+                        <a href="<?= $BASE_URL ?>edit_contact.php?id=<?= $contact->id ?>" class="edit-btn">
+                            <i class="far fa-edit"></i> Editar
+                        </a>
+                        <form action="<?= $BASE_URL ?>contact_process.php" method="POST">
+                            <input type="hidden" name="type" value="delete">
+                            <input type="hidden" name="id" value="<?= $contact->id ?>">
+                            <button type="submit" class="delete-btn">
+                            <i class="fas fa-times"></i> Deletar
+                            </button>
+                        </form>
                         </td>
                     </tr>
                 <?php endforeach; ?>
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     <?php else: ?>
-        <p id="empty-list-text">Ainda não há contatos na sua agenda, <a href="<?= $BASE_URL ?>create.php">Clique aqui para adicionar</a>.</p>
+        <p id="empty-list-text">Ainda não há contatos na sua agenda, <a href="<?= $BASE_URL ?>create_contact.php">Clique aqui para adicionar</a>.</p>
     <?php endif; ?>
-</div>
+  </div>
 
 <?php
-    include_once("templates/footer.php");
+    require_once("templates/footer.php");
 ?>
     
