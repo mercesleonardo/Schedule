@@ -228,6 +228,11 @@ class UserDAO implements UserDAOInterface {
 
     public function destroyToken() {
 
+        // Remove the token from the session
+        $_SESSION["token"] = "";
+
+        // Logout the user and redirect back to the login page
+        $this->message->setMessage("Você fez o logout com sucesso!", "success", "auth.php");
 
     }
 
