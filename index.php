@@ -13,7 +13,7 @@
     // Check if the user is authenticated
     $userData = $userDao->verifyToken(true);
 
-    $userContacts = $contactDao->getContactsByUserId($userData->id); 
+    $userContacts = $contactDao->getContactsByUserId($userData->id);
 
 ?>
 

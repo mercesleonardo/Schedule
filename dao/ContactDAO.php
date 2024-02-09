@@ -87,13 +87,14 @@
 
         }
 
-        public function findByName($name) {
+        public function findByName($name, $id) {
 
             $contacts = [];
 
-            $stmt = $this->conn->prepare("SELECT * FROM contacts WHERE name LIKE :name");
+            $stmt = $this->conn->prepare("SELECT * FROM contacts WHERE name LIKE :name AND users_id = :users_id");
 
             $stmt->bindValue(":name", "%".$name."%");
+            $stmt->bindParam(":users_id", $id);
 
             $stmt->execute();
 
