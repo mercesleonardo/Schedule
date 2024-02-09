@@ -89,6 +89,28 @@
 
         public function findByName($name) {
 
+            $contacts = [];
+
+            $stmt = $this->conn->prepare("SELECT * FROM contacts WHERE name LIKE :name");
+
+            $stmt->bindValue(":name", "%".$name."%");
+
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) {
+
+                $contactArrays = $stmt->fetchAll();
+
+                foreach ($contactArrays as $contact) {
+
+                    $contacts[] = $this->buildContact($contact);
+
+                }
+
+            }
+
+            return $contacts;
+
         }
 
         public function create(Contact $contact) {
@@ -108,9 +130,28 @@
 
         public function update(Contact $contact) {
 
+            $stmt = $this->conn->prepare("UPDATE contacts SET name = :name, phone = :phone, observations = :observations WHERE id = :id");
+
+            $stmt->bindParam(":name", $contact->name);
+            $stmt->bindParam(":phone", $contact->phone);
+            $stmt->bindParam(":observations", $contact->observations);
+            $stmt->bindParam(":id", $contact->id);
+
+            $stmt->execute();
+
+            $this->message->setMessage("Contato atualizado com sucesso!", "success", "index.php");
+
         }
 
         public function destroy($id) {
+
+            $stmt = $this->conn->prepare("DELETE FROM contacts WHERE id = :id");
+
+            $stmt->bindParam(":id", $id);
+
+            $stmt->execute();
+
+            $this->message->setMessage("Contato removido com sucesso!", "success", "index.php");
 
         }
 

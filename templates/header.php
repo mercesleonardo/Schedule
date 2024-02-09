@@ -2,7 +2,6 @@
     require_once("config/globals.php");
     require_once("models/Message.php");
     require_once("dao/UserDAO.php");
-    // require_once("config/process.php");
     require_once("config/connection.php");
 
     $message = new Message($BASE_URL);
@@ -44,13 +43,7 @@
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="fas fa-bars"></i>
-            </button>
-            <form action="<?= $BASE_URL ?>search.php" method="GET" id="search-form" class="form-inline my-2 my-lg-0">
-                <input type="text" name="q" id="search" class="form-control mr-sm-2" type="search" placeholder="Buscar contato" aria-label="Search">
-                <button class="btn my-2 my-sm-0" type="submit">
-                    <i class="fas fa-search"></i>
-                </button>
-            </form>
+            </button>            
             <div class="collapse navbar-collapse" id="navbar">
                 <ul class="navbar-nav">
                     <?php if($userData): ?>
