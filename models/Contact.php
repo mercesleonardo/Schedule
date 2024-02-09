@@ -15,7 +15,7 @@ interface ContactDAOInterface {
     public function buildContact($data);
     public function getContactsByUserId($id);
     public function findById($id);
-    public function findByName($name);
+    public function findByName($name, $id);
     public function create(Contact $contact);
     public function update(Contact $contact);
     public function destroy($id);

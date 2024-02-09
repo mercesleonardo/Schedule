@@ -2,7 +2,6 @@
     require_once("config/globals.php");
     require_once("models/Message.php");
     require_once("dao/UserDAO.php");
-    // require_once("config/process.php");
     require_once("config/connection.php");
 
     $message = new Message($BASE_URL);

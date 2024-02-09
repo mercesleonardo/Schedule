@@ -13,7 +13,7 @@
     // Check if the user is authenticated
     $userData = $userDao->verifyToken(true);
 
-    $userContacts = $contactDao->getContactsByUserId($userData->id); 
+    $userContacts = $contactDao->getContactsByUserId($userData->id);
 
 ?>
 
@@ -21,12 +21,12 @@
     <h2 class="section-title">Minha Agenda</h2>
     <p class="section-description">Adicione ou atualize as informações dos seus contatos</p>
     <?php if($userContacts): ?>
-        <div class="col-md-12" id="add-movie-container">
+        <div class="col-md-12" id="add-contact-container">
             <a href="<?= $BASE_URL ?>create_contact.php" class="btn card-btn">
                 <i class="fas fa-plus"></i> Adicionar contato
             </a>
             </div>
-            <div class="col-md-12" id="movies-dashboard">
+            <div class="col-md-12" id="contacts-dashboard">
             <table class="table">
                 <thead>
                 <th scope="col">#</th>
@@ -38,7 +38,7 @@
                 <?php foreach($userContacts as $contact): ?>
                     <tr>
                         <td scope="row"><?= $contact->id ?></td>
-                        <td class="table-contact-title"><?= $contact->name ?></a></td>            
+                        <td><a href="<?= $BASE_URL ?>show_contact.php?id=<?= $contact->id ?>" class="table-contact-title"><?= $contact->name ?></a></td>            
                         <td><?= $contact->phone ?></td>            
                         <td class="actions-column">
                         <a href="<?= $BASE_URL ?>edit_contact.php?id=<?= $contact->id ?>" class="edit-btn">

@@ -1,3 +1,13 @@
+<?php
+
+require_once("dao/UserDAO.php");
+
+$userDao = new UserDAO($conn, $BASE_URL);
+
+$userData = $userDao->verifyToken(false);
+
+?>
+
 <footer id="footer">
     <div id="social-container">
         <ul>
@@ -14,9 +24,11 @@
     </div>
     <div id="footer-links-container">
         <ul>
-            <li><a href="#">Adicionar filme</a></li>
-            <li><a href="#">Adicionar crítica</a></li>
-            <li><a href="#">Entrar / Registrar</a></li>
+            <li><a href="<?= $BASE_URL ?>create_contact.php">Incluir Contato</a></li>
+            <li><a href="<?= $BASE_URL ?>">Meus contatos</a></li>
+            <?php if(!$userData): ?>
+                <li><a href="<?= $BASE_URL ?>auth.php">Entrar / Registrar</a></li>
+            <?php endif; ?>
         </ul>
     </div>
     <p>&copy; 2024 Leonardo M Carvalho</p>
